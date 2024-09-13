@@ -21,12 +21,11 @@ Issue _$IssueFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Issue {
   String get title => throw _privateConstructorUsedError;
-  User get user =>
-      throw _privateConstructorUsedError; // Reference the User class from user.dart
+  User get user => throw _privateConstructorUsedError;
+  int get number => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
-  String get createdAt =>
-      throw _privateConstructorUsedError; // Map the JSON field
-  String get body => throw _privateConstructorUsedError;
+  String get createdAt => throw _privateConstructorUsedError;
+  String? get body => throw _privateConstructorUsedError;
 
   /// Serializes this Issue to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,8 +44,9 @@ abstract class $IssueCopyWith<$Res> {
   $Res call(
       {String title,
       User user,
+      int number,
       @JsonKey(name: 'created_at') String createdAt,
-      String body});
+      String? body});
 
   $UserCopyWith<$Res> get user;
 }
@@ -68,8 +68,9 @@ class _$IssueCopyWithImpl<$Res, $Val extends Issue>
   $Res call({
     Object? title = null,
     Object? user = null,
+    Object? number = null,
     Object? createdAt = null,
-    Object? body = null,
+    Object? body = freezed,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -80,14 +81,18 @@ class _$IssueCopyWithImpl<$Res, $Val extends Issue>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      number: null == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
-      body: null == body
+      body: freezed == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 
@@ -112,8 +117,9 @@ abstract class _$$IssueImplCopyWith<$Res> implements $IssueCopyWith<$Res> {
   $Res call(
       {String title,
       User user,
+      int number,
       @JsonKey(name: 'created_at') String createdAt,
-      String body});
+      String? body});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -134,8 +140,9 @@ class __$$IssueImplCopyWithImpl<$Res>
   $Res call({
     Object? title = null,
     Object? user = null,
+    Object? number = null,
     Object? createdAt = null,
-    Object? body = null,
+    Object? body = freezed,
   }) {
     return _then(_$IssueImpl(
       title: null == title
@@ -146,14 +153,18 @@ class __$$IssueImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      number: null == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
-      body: null == body
+      body: freezed == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -164,8 +175,9 @@ class _$IssueImpl implements _Issue {
   const _$IssueImpl(
       {required this.title,
       required this.user,
+      required this.number,
       @JsonKey(name: 'created_at') required this.createdAt,
-      required this.body});
+      this.body});
 
   factory _$IssueImpl.fromJson(Map<String, dynamic> json) =>
       _$$IssueImplFromJson(json);
@@ -174,17 +186,17 @@ class _$IssueImpl implements _Issue {
   final String title;
   @override
   final User user;
-// Reference the User class from user.dart
+  @override
+  final int number;
   @override
   @JsonKey(name: 'created_at')
   final String createdAt;
-// Map the JSON field
   @override
-  final String body;
+  final String? body;
 
   @override
   String toString() {
-    return 'Issue(title: $title, user: $user, createdAt: $createdAt, body: $body)';
+    return 'Issue(title: $title, user: $user, number: $number, createdAt: $createdAt, body: $body)';
   }
 
   @override
@@ -194,6 +206,7 @@ class _$IssueImpl implements _Issue {
             other is _$IssueImpl &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.user, user) || other.user == user) &&
+            (identical(other.number, number) || other.number == number) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.body, body) || other.body == body));
@@ -201,7 +214,8 @@ class _$IssueImpl implements _Issue {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, title, user, createdAt, body);
+  int get hashCode =>
+      Object.hash(runtimeType, title, user, number, createdAt, body);
 
   /// Create a copy of Issue
   /// with the given fields replaced by the non-null parameter values.
@@ -223,20 +237,23 @@ abstract class _Issue implements Issue {
   const factory _Issue(
       {required final String title,
       required final User user,
+      required final int number,
       @JsonKey(name: 'created_at') required final String createdAt,
-      required final String body}) = _$IssueImpl;
+      final String? body}) = _$IssueImpl;
 
   factory _Issue.fromJson(Map<String, dynamic> json) = _$IssueImpl.fromJson;
 
   @override
   String get title;
   @override
-  User get user; // Reference the User class from user.dart
+  User get user;
+  @override
+  int get number;
   @override
   @JsonKey(name: 'created_at')
-  String get createdAt; // Map the JSON field
+  String get createdAt;
   @override
-  String get body;
+  String? get body;
 
   /// Create a copy of Issue
   /// with the given fields replaced by the non-null parameter values.

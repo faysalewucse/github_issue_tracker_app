@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:github_issue_tracker/controllers/issues_controller.dart';
 import 'package:github_issue_tracker/helper/colors.dart';
-import 'package:github_issue_tracker/models/issue/issue.dart';
+import 'package:github_issue_tracker/helper/constant.dart';
+import 'package:github_issue_tracker/router/routes.dart';
+import 'package:github_issue_tracker/utils/sizedbox_extension.dart';
 import 'package:github_issue_tracker/widgets/cards/issue_card.dart';
+import 'package:github_issue_tracker/widgets/issue/issues_search_bottom_sheet.dart';
 import 'package:github_issue_tracker/widgets/loaders/custom_loader.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,12 +19,31 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
   final issuesController = Get.find<IssuesController>();
 
-  late List<Issue> issueList;
+  int limit = 30;
 
   void _initCall() async {
-    issueList = await issuesController.getRepoIssues();
+    await issuesController.getRepoIssues();
+    issuesScrolling();
+  }
+
+  void issuesScrolling() {
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+        int page = issuesController.issuePage.value;
+
+        if (!issuesController.loadingMoreIssues.value) {
+          issuesController.issuePage(page + 1);
+
+          if (page <= (issuesController.totalIssues.value / limit).ceil()) {
+            await issuesController.getRepoIssues();
+          }
+        }
+      }
+    });
   }
 
   @override
@@ -29,24 +53,127 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Container(
+          color: CARD_COLOR,
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Text(
+                "Issue List",
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              16.kW,
+              Container(
+                decoration: BoxDecoration(
+                    color: BG_GRAY_1, borderRadius: BorderRadius.circular(26)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                child: Text(
+                  "master",
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              )
+            ],
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              showSearchBottomSheet(context);
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Icon(PhosphorIcons.magnifying_glass),
+            ),
+          )
+        ],
+      ),
       backgroundColor: PURE_BLACK,
       body: Container(
         color: PURE_BLACK,
-        child: Obx(() => issuesController.getRepoIssuesLoading.isTrue
-            ? const Center(child: CustomLoader()) // Show loader when data is being fetched
-            : issueList.isEmpty
-            ? const Center(child: Text('No issues found'))
-            : ListView.separated(
-          separatorBuilder: (_, i) => Container(color: BORDER_COLOR_1, height: 1,),
-          itemCount: issueList.length,
-          itemBuilder: (context, index) {
-            final issue = issueList[index];
-            return IssueCard(issue: issue);
-          },
-        )),
+        child: Obx(
+          () => issuesController.getRepoIssuesLoading.isTrue
+              ? const Center(
+                  child: CustomLoader(),
+                ) // Show loader when data is being fetched
+              : issuesController.getRepoIssuesErrorMessage.isNotEmpty
+                  ? Center(
+                      child: Text(
+                          issuesController.getRepoIssuesErrorMessage.value),
+                    )
+                  : issuesController.issues.isEmpty
+                      ? const Center(child: Text('No issues found'))
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: ListView.separated(
+                                controller: _scrollController,
+                                separatorBuilder: (_, i) => Container(
+                                  color: BORDER_COLOR_1,
+                                  height: 1,
+                                ),
+                                itemCount: issuesController.issues.length,
+                                itemBuilder: (context, index) {
+                                  final issue = issuesController.issues[index];
+                                  return GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(AppRoutes.issueDetails,
+                                            arguments: issue);
+                                      },
+                                      child: IssueCard(issue: issue));
+                                },
+                              ),
+                            ),
+                            // Use Padding or SizedBox instead of Positioned
+                            Obx(
+                              () => issuesController.loadingMoreIssues.value
+                                  ? const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Center(
+                                        child: SpinKitThreeBounce(
+                                          size: 20,
+                                          color: PRIMARY_COLOR,
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            )
+                          ],
+                        ),
+        ),
       ),
+    );
+  }
+
+  void showSearchBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const ContinuousRectangleBorder(
+        side: BorderSide(
+          color: Colors.transparent, // Border color
+        ),
+      ),
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SizedBox(
+              height: deviceHeight * 0.6,
+              child: const IssuesSearchBottomSheet()),
+        );
+      },
     );
   }
 }

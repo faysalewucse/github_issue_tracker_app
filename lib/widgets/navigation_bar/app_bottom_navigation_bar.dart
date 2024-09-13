@@ -14,22 +14,22 @@ class AppBottomNavbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      fixedColor: PRIMARY_COLOR,
-      unselectedItemColor: NEUTRAL_N700,
+      fixedColor: Theme.of(context).primaryColor,
+      unselectedItemColor: Theme.of(context).primaryColor.withOpacity(0.5),
       showUnselectedLabels: true,
       elevation: 0,
       backgroundColor: PURE_BLACK,
-      selectedLabelStyle: GoogleFonts.poppins(fontSize: 14),
+      selectedLabelStyle: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
       unselectedLabelStyle: GoogleFonts.poppins(fontSize: 14),
       currentIndex: currentIndex,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(PhosphorIcons.git_commit),
-          label: 'Commits',
+          icon: Icon(PhosphorIcons.bug),
+          label: 'Issues',
         ),
         BottomNavigationBarItem(
           icon: Icon(PhosphorIcons.user),
-          label: 'User Profile',
+          label: 'Profile',
         ),
       ],
       onTap: onTap,

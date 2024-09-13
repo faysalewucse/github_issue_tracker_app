@@ -65,8 +65,8 @@ TextStyle n30022Normal = const TextStyle(
     color: NEUTRAL_N300, fontSize: 22, fontWeight: FontWeight.normal); //done
 TextStyle n70012Normal = const TextStyle(
     color: NEUTRAL_N700, fontSize: 12, fontWeight: FontWeight.normal); //done
-TextStyle n70012W500 = const TextStyle(
-    color: NEUTRAL_N700, fontSize: 12, fontWeight: FontWeight.w500); //done
+TextStyle white12W500 = const TextStyle(
+    color: WHITE, fontSize: 12, fontWeight: FontWeight.w500); //done
 TextStyle n70014Normal = const TextStyle(
     color: NEUTRAL_N700, fontSize: 14, fontWeight: FontWeight.normal); //done
 TextStyle n70014W500 = const TextStyle(
@@ -85,8 +85,8 @@ TextStyle n30016W500LineThrough = const TextStyle(
     decoration: TextDecoration.lineThrough); //done
 TextStyle e50016W500 = const TextStyle(
     color: ERROR_500, fontSize: 16, fontWeight: FontWeight.w500); //done
-TextStyle n70020W500 = const TextStyle(
-    color: NEUTRAL_N700, fontSize: 20, fontWeight: FontWeight.w500);
+TextStyle white70020W500 = const TextStyle(
+    color: WHITE, fontSize: 20, fontWeight: FontWeight.w700);
 TextStyle n70024W500 = const TextStyle(
     color: NEUTRAL_N700, fontSize: 24, fontWeight: FontWeight.w500);
 TextStyle primary14W500 = const TextStyle(
