@@ -1,63 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:github_issue_tracker/helper/colors.dart';
+import 'package:github_issue_tracker/helper/constant.dart';
+import 'package:github_issue_tracker/helper/dialog_helper.dart';
+import 'package:github_issue_tracker/models/issue/issue.dart';
+import 'package:github_issue_tracker/utils/converter.dart';
+import 'package:github_issue_tracker/utils/sizedbox_extension.dart';
 
 class IssueCard extends StatelessWidget {
-  const IssueCard({super.key});
+  final Issue issue;
+  const IssueCard({super.key, required this.issue});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: const Color(0xFF333333), // Background color #333333
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0), // Rounded corners
+    return Container(
+      decoration: BoxDecoration(
+        color: CARD_COLOR,
+        borderRadius: BorderRadius.circular(0.0),
       ),
-      child: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                // Avatar
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://via.placeholder.com/150'), // Replace with actual image URL
-                  radius: 20,
-                ),
-                SizedBox(width: 8),
-                // Texts
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Fix All bugs',
-                      style: TextStyle(
-                        color: Colors.white, // Text color
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title text with wrapping
+                  SizedBox(
+                    width: deviceWidth * 0.8, // Limit the width to ensure wrapping
+                    child: Text(
+                      issue.title,
+                      style: Theme.of(context).textTheme.titleSmall,
+                      overflow: TextOverflow.visible, // Allow wrapping if overloaded
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Côte d\'Ivoire',
-                      style: TextStyle(
-                        color: Colors.grey, // Text color for location
-                        fontSize: 14,
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(issue.user.avatarUrl), // Show user avatar
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            // Time
-            Text(
-              '12:20',
-              style: TextStyle(
-                color: Colors.grey, // Text color for time
-                fontSize: 14,
+                      8.kW,
+                      Text(
+                        issue.user.login,
+                        style: const TextStyle(
+                          color: Colors.grey, // Text color for username
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
+            ],
+          ),
+          Text(
+            formatTime(issue.createdAt), // Display time in 24-hour format
+            style: const TextStyle(
+              color: Colors.grey, // Text color for time
+              fontSize: 14,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -33,7 +33,7 @@ class MyTheme {
       displaySmall: n70014Normal,
       titleLarge: n70024W500,
       titleMedium: e50016W500,
-      titleSmall: n70018Normal,
+      titleSmall: white18W600,
       headlineLarge: n70020W500,
       headlineMedium: white18Normal,
       headlineSmall: primary14W500,

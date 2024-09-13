@@ -56,7 +56,7 @@ TextStyle n30012W500 = const TextStyle(
 TextStyle n50014W400 = const TextStyle(
     color: NEUTRAL_N500, fontSize: 14, fontWeight: FontWeight.normal);
 TextStyle n70018Normal = const TextStyle(
-    color: NEUTRAL_N700, fontSize: 18, fontWeight: FontWeight.normal);
+    color: WHITE, fontSize: 18, fontWeight: FontWeight.normal);
 TextStyle white18Normal = const TextStyle(
     color: WHITE, fontSize: 18, fontWeight: FontWeight.normal);
 TextStyle n30016W500 = const TextStyle(
