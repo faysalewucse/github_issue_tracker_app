@@ -12,6 +12,10 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Profile"),
+      ),
       body: Obx(()=> authController.isAuthenticated.isTrue ? UserProfile() : SignInScreen()),
     );
   }

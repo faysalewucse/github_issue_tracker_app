@@ -11,6 +11,7 @@ class IssuesController extends GetxController {
   final issuePage = 1.obs;
   final searchTextInclude = "".obs;
   final searchTextExclude = "".obs;
+  final repoUrl = "flutter/flutter".obs;
 
   Future<void> getRepoIssues() async {
     try {
@@ -22,16 +23,17 @@ class IssuesController extends GetxController {
         loadingMoreIssues(true);
       }
 
-      final response = await IssueService.getRepoIssues(page: currentPage);
+      if(repoUrl.isEmpty) repoUrl("flutter/flutter");
 
-      final List<Issue> responseIssues = (response.data as List)
+      final response = await IssueService.getRepoIssues(page: currentPage, repoUrl: repoUrl.value, titleIncludes: searchTextInclude.value);
+
+      final List<Issue> responseIssues = (response.data["items"] as List)
           .map((issueJson) => Issue.fromJson(issueJson))
           .toList();
 
-      if (currentPage == 1) {
-        totalIssues(responseIssues.first.number);
-        issues.clear();
-      }
+      if(searchTextInclude.isNotEmpty || searchTextExclude.isNotEmpty || repoUrl.isNotEmpty) issues.clear();
+
+      totalIssues(response.data["total_count"]);
 
       issues.addAll(responseIssues);
       filterIssues();
@@ -46,11 +48,6 @@ class IssuesController extends GetxController {
 
   void filterIssues() {
     var filteredIssues = issues.toList();
-    if (searchTextInclude.isNotEmpty) {
-      filteredIssues = filteredIssues.where((issue) =>
-          issue.title.toLowerCase().contains(searchTextInclude.value.toLowerCase())
-      ).toList();
-    }
 
     if (searchTextExclude.isNotEmpty) {
       filteredIssues = filteredIssues.where((issue) =>
@@ -59,11 +56,5 @@ class IssuesController extends GetxController {
     }
 
     issues(filteredIssues);
-  }
-
-  void updateSearchFilters({String? include, String? exclude}) {
-    if (include != null) searchTextInclude(include);
-    if (exclude != null) searchTextExclude(exclude);
-    filterIssues();
   }
 }

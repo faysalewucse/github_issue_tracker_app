@@ -100,14 +100,14 @@ TextStyle n10014W500 = const TextStyle(
 TextStyle n20014W500 = const TextStyle(
     color: NEUTRAL_N200, fontSize: 14, fontWeight: FontWeight.w500);
 
-TextStyle white14W500 = const TextStyle(
-    color: WHITE, fontSize: 14, fontWeight: FontWeight.w500);
+TextStyle white14W600 = const TextStyle(
+    color: WHITE, fontSize: 14, fontWeight: FontWeight.w600);
 TextStyle white16W600 = const TextStyle(
     color: WHITE, fontSize: 16, fontWeight: FontWeight.w600);
 TextStyle white16W600Arabic = GoogleFonts.ibmPlexSansArabic(
     color: WHITE, fontSize: 16, fontWeight: FontWeight.w600);
-TextStyle white18W600 = const TextStyle(
-    color: WHITE, fontSize: 18, fontWeight: FontWeight.w600);
+TextStyle white16W500 = const TextStyle(
+    color: WHITE, fontSize: 16, fontWeight: FontWeight.w500);
 TextStyle megebtaSeed20W500 = const TextStyle(
     color: PRIMARY_COLOR, fontSize: 20, fontWeight: FontWeight.w500);
 TextStyle megebtaSeed14W500 = const TextStyle(

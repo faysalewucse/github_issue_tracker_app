@@ -14,8 +14,7 @@ class IssuesSearchBottomSheet extends StatefulWidget {
 }
 
 class _IssuesSearchBottomSheetState extends State<IssuesSearchBottomSheet> {
-  TextEditingController userName = TextEditingController();
-  TextEditingController repoName = TextEditingController();
+  TextEditingController repoUrl = TextEditingController();
   TextEditingController searchText = TextEditingController();
   TextEditingController searchTextExclude = TextEditingController();
 
@@ -27,6 +26,7 @@ class _IssuesSearchBottomSheetState extends State<IssuesSearchBottomSheet> {
     super.initState();
     searchText.text = issueController.searchTextInclude.value;
     searchTextExclude.text = issueController.searchTextExclude.value;
+    repoUrl.text = issueController.repoUrl.value;
   }
 
   @override
@@ -51,15 +51,9 @@ class _IssuesSearchBottomSheetState extends State<IssuesSearchBottomSheet> {
             ),
             TextFieldWithLabel(
               required: false,
-              controller: userName,
-              label: "GitHub User Name",
-              hintText: "ex: faysalewucse",
-            ),
-            TextFieldWithLabel(
-              required: false,
-              controller: repoName,
-              label: "GitHub Repository Name",
-              hintText: "@ex: github_issue_tracker_app",
+              controller: repoUrl,
+              label: "GitHub Repository URL",
+              hintText: "{owner}/{repo}",
             ),
             PrimaryButton(label: "Search", onTap: searchIssues)
           ],
@@ -72,6 +66,7 @@ class _IssuesSearchBottomSheetState extends State<IssuesSearchBottomSheet> {
     issueController.issuePage(1);
     issueController.searchTextInclude(searchText.text);
     issueController.searchTextExclude(searchTextExclude.text);
+    issueController.repoUrl(repoUrl.text);
     Get.back();
     await issueController.getRepoIssues();
   }

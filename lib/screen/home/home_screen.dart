@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:github_issue_tracker/controllers/issues_controller.dart';
 import 'package:github_issue_tracker/helper/colors.dart';
 import 'package:github_issue_tracker/helper/constant.dart';
+import 'package:github_issue_tracker/helper/images.dart';
 import 'package:github_issue_tracker/router/routes.dart';
 import 'package:github_issue_tracker/utils/sizedbox_extension.dart';
 import 'package:github_issue_tracker/widgets/cards/issue_card.dart';
@@ -62,15 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: PURE_BLACK,
         title: Container(
-          color: CARD_COLOR,
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Text(
-                "Issue List",
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
+              Obx(()=> Text(issuesController.repoUrl.value, style: Theme.of(context).textTheme.titleSmall)),
               16.kW,
               Container(
                 decoration: BoxDecoration(
@@ -99,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       backgroundColor: PURE_BLACK,
       body: Container(
-        color: PURE_BLACK,
+        color: CARD_COLOR,
         child: Obx(
           () => issuesController.getRepoIssuesLoading.isTrue
               ? const Center(
@@ -111,10 +109,29 @@ class _HomeScreenState extends State<HomeScreen> {
                           issuesController.getRepoIssuesErrorMessage.value),
                     )
                   : issuesController.issues.isEmpty
-                      ? const Center(child: Text('No issues found'))
+                      ? Center(
+                          child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              AppImages.noProblemImage,
+                              color: WHITE,
+                              width: deviceWidth * 0.3,
+                            ),
+                            8.kH,
+                            Text("No Issues Found", style: Theme.of(context).textTheme.titleSmall,)
+                          ],
+                        ))
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                "Issue List",
+                                style: Theme.of(context).textTheme.headlineLarge,
+                              ),
+                            ),
                             Expanded(
                               child: ListView.separated(
                                 controller: _scrollController,
@@ -170,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: SizedBox(
-              height: deviceHeight * 0.6,
+              height: deviceHeight * 0.5,
               child: const IssuesSearchBottomSheet()),
         );
       },

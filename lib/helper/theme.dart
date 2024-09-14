@@ -7,7 +7,7 @@ class MyTheme {
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: WHITE,
     canvasColor: SCAFFOLD_BACKGROUND_COLOR,
-    fontFamily: GoogleFonts.hindSiliguri().fontFamily,
+    fontFamily: GoogleFonts.poppins().fontFamily,
     primaryColor: PRIMARY_COLOR,
     cardColor: WHITE,
     indicatorColor: PRIMARY_COLOR_LIGHT,
@@ -15,7 +15,7 @@ class MyTheme {
     appBarTheme: AppBarTheme(
       backgroundColor: CARD_COLOR,
       titleSpacing: 0,
-      titleTextStyle: GoogleFonts.hindSiliguri(
+      titleTextStyle: GoogleFonts.poppins(
           fontWeight: FontWeight.w700, fontSize: 20, color: WHITE),
       iconTheme: const IconThemeData(
         color: WHITE, //change your color here
@@ -33,7 +33,7 @@ class MyTheme {
       displaySmall: n70014Normal,
       titleLarge: n70024W500,
       titleMedium: e50016W500,
-      titleSmall: white18W600,
+      titleSmall: white14W600,
       headlineLarge: white70020W500,
       headlineMedium: white18Normal,
       headlineSmall: primary14W500,
@@ -43,7 +43,7 @@ class MyTheme {
   static final darkTheme = ThemeData(
     scaffoldBackgroundColor: DARK_SCAFFOLD_BACKGROUND_COLOR,
     canvasColor: DARK_SCAFFOLD_BACKGROUND_COLOR,
-    fontFamily: GoogleFonts.hindSiliguri().fontFamily,
+    fontFamily: GoogleFonts.poppins().fontFamily,
     primaryColor: BLACK,
     cardColor: BLACK,
     indicatorColor: BLACK,
@@ -51,7 +51,7 @@ class MyTheme {
     appBarTheme: AppBarTheme(
       backgroundColor: BLACK,
       titleSpacing: 0,
-      titleTextStyle: GoogleFonts.hindSiliguri(
+      titleTextStyle: GoogleFonts.poppins(
           fontWeight: FontWeight.w700, fontSize: 20, color: WHITE),
       iconTheme: const IconThemeData(
         color: WHITE, //change your color here
