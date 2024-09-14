@@ -11,6 +11,7 @@ import 'package:github_issue_tracker/utils/sizedbox_extension.dart';
 import 'package:github_issue_tracker/widgets/cards/issue_card.dart';
 import 'package:github_issue_tracker/widgets/issue/issues_search_bottom_sheet.dart';
 import 'package:github_issue_tracker/widgets/loaders/custom_loader.dart';
+import 'package:github_issue_tracker/widgets/shimmers/issue_card_shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -68,7 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Obx(()=> Text(issuesController.repoUrl.value, style: Theme.of(context).textTheme.titleSmall)),
+              Obx(() => Text(issuesController.repoUrl.value,
+                  style: Theme.of(context).textTheme.titleSmall)),
               16.kW,
               Container(
                 decoration: BoxDecoration(
@@ -98,75 +100,92 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: PURE_BLACK,
       body: Container(
         color: CARD_COLOR,
-        child: Obx(
-          () => issuesController.getRepoIssuesLoading.isTrue
-              ? const Center(
-                  child: CustomLoader(),
-                ) // Show loader when data is being fetched
-              : issuesController.getRepoIssuesErrorMessage.isNotEmpty
-                  ? Center(
-                      child: Text(
-                          issuesController.getRepoIssuesErrorMessage.value),
-                    )
-                  : issuesController.issues.isEmpty
-                      ? Center(
-                          child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              AppImages.noProblemImage,
-                              color: WHITE,
-                              width: deviceWidth * 0.3,
-                            ),
-                            8.kH,
-                            Text("No Issues Found", style: Theme.of(context).textTheme.titleSmall,)
-                          ],
-                        ))
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                "Issue List",
-                                style: Theme.of(context).textTheme.headlineLarge,
-                              ),
-                            ),
-                            Expanded(
-                              child: ListView.separated(
-                                controller: _scrollController,
-                                separatorBuilder: (_, i) => Container(
-                                  color: BORDER_COLOR_1,
-                                  height: 1,
-                                ),
-                                itemCount: issuesController.issues.length,
-                                itemBuilder: (context, index) {
-                                  final issue = issuesController.issues[index];
-                                  return GestureDetector(
-                                      onTap: () {
-                                        Get.toNamed(AppRoutes.issueDetails,
-                                            arguments: issue);
-                                      },
-                                      child: IssueCard(issue: issue));
-                                },
-                              ),
-                            ),
-                            // Use Padding or SizedBox instead of Positioned
-                            Obx(
-                              () => issuesController.loadingMoreIssues.value
-                                  ? const Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Center(
-                                        child: SpinKitThreeBounce(
-                                          size: 20,
-                                          color: PRIMARY_COLOR,
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                            )
-                          ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Issue List",
+                style:
+                Theme.of(context).textTheme.headlineLarge,
+              ),
+            ),
+            Expanded(
+              child: Obx(
+                () => issuesController.getRepoIssuesLoading.isTrue
+                    ? ListView.separated(
+                        itemCount: 10,
+                        separatorBuilder: (_, i) => Container(
+                          color: BORDER_COLOR_1,
+                          height: 1,
                         ),
+                        itemBuilder: (context, index) {
+                          return const IssueCardShimmer();
+                        },
+                      )
+                    : issuesController.getRepoIssuesErrorMessage.isNotEmpty
+                        ? Center(
+                            child: Text(
+                                issuesController.getRepoIssuesErrorMessage.value),
+                          )
+                        : issuesController.issues.isEmpty
+                            ? Center(
+                                child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    AppImages.noProblemImage,
+                                    color: WHITE,
+                                    width: deviceWidth * 0.3,
+                                  ),
+                                  8.kH,
+                                  Text(
+                                    "No Issues Found",
+                                    style: Theme.of(context).textTheme.titleSmall,
+                                  )
+                                ],
+                              ))
+                            : Column(
+                                children: [
+                                  Expanded(
+                                    child: ListView.separated(
+                                      controller: _scrollController,
+                                      separatorBuilder: (_, i) => Container(
+                                        color: BORDER_COLOR_1,
+                                        height: 1,
+                                      ),
+                                      itemCount: issuesController.issues.length,
+                                      itemBuilder: (context, index) {
+                                        final issue = issuesController.issues[index];
+                                        return GestureDetector(
+                                            onTap: () {
+                                              Get.toNamed(AppRoutes.issueDetails,
+                                                  arguments: issue);
+                                            },
+                                            child: IssueCard(issue: issue));
+                                      },
+                                    ),
+                                  ),
+                                  // Use Padding or SizedBox instead of Positioned
+                                  Obx(
+                                    () => issuesController.loadingMoreIssues.value
+                                        ? const Padding(
+                                            padding: EdgeInsets.all(10.0),
+                                            child: Center(
+                                              child: SpinKitThreeBounce(
+                                                size: 20,
+                                                color: PRIMARY_COLOR,
+                                              ),
+                                            ),
+                                          )
+                                        : const SizedBox(),
+                                  )
+                                ],
+                              ),
+              ),
+            ),
+          ],
         ),
       ),
     );
