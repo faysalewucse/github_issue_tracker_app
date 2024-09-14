@@ -14,19 +14,19 @@ GitHub Issue Tracker is a Flutter app that allows users to track issues across m
 ## Screenshots
 
 ### Home Screen
-![Home Screen](assets/screenshots/shimmer_effect.png)
+<img src="assets/screenshots/shimmer_effect.png" alt="Home Screen" width="300"/>
 
 ### Issue List
-![Issue List](assets/screenshots/issue_list.png)
+<img src="assets/screenshots/issue_list.png" alt="Issue List" width="300"/>
 
 ### Issue Details
-![Issue Details](assets/screenshots/issue_details.png)
+<img src="assets/screenshots/issue_details.png" alt="Issue Details" width="300"/>
 
 ### Search Bottom Sheet
-![Issue Details](assets/screenshots/search_bottom_sheet.png)
+<img src="assets/screenshots/search_bottom_sheet.png" alt="Search Bottom Sheet" width="300"/>
 
 ### Profile Screen
-![Issue Details](assets/screenshots/profile.png)
+<img src="assets/screenshots/profile.png" alt="Profile Screen" width="300"/>
 
 
 ## Getting Started
