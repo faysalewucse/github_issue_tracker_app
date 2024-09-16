@@ -6,7 +6,7 @@ const String appName = "রুকইয়াহ ও আয়াত";
 double deviceHeight = 0;
 double deviceWidth = 0;
 String AUTH_TOKEN = "token";
-
+String defaultRepoUrl = "flutter/flutter";
 //=============text style======================//
 TextStyle errorTextStyle =
  GoogleFonts.tiroBangla(color: RED, fontWeight: FontWeight.w500, fontSize: 10);

@@ -7,7 +7,8 @@ import 'package:github_issue_tracker/utils/sizedbox_extension.dart';
 
 class IssueCard extends StatelessWidget {
   final Issue issue;
-  const IssueCard({super.key, required this.issue});
+  final int index;
+  const IssueCard({super.key, required this.issue, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class IssueCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Text(index.toString()),
           Row(
             children: [
               Column(

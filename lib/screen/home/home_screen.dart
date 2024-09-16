@@ -8,6 +8,7 @@ import 'package:github_issue_tracker/helper/constant.dart';
 import 'package:github_issue_tracker/helper/images.dart';
 import 'package:github_issue_tracker/router/routes.dart';
 import 'package:github_issue_tracker/utils/sizedbox_extension.dart';
+import 'package:github_issue_tracker/widgets/buttons/primary_button.dart';
 import 'package:github_issue_tracker/widgets/cards/issue_card.dart';
 import 'package:github_issue_tracker/widgets/issue/issues_search_bottom_sheet.dart';
 import 'package:github_issue_tracker/widgets/loaders/custom_loader.dart';
@@ -107,8 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 "Issue List",
-                style:
-                Theme.of(context).textTheme.headlineLarge,
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
             ),
             Expanded(
@@ -124,65 +124,79 @@ class _HomeScreenState extends State<HomeScreen> {
                           return const IssueCardShimmer();
                         },
                       )
-                    : issuesController.getRepoIssuesErrorMessage.isNotEmpty
+                    : issuesController.issues.isEmpty
                         ? Center(
-                            child: Text(
-                                issuesController.getRepoIssuesErrorMessage.value),
-                          )
-                        : issuesController.issues.isEmpty
-                            ? Center(
-                                child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    AppImages.noProblemImage,
-                                    color: WHITE,
-                                    width: deviceWidth * 0.3,
-                                  ),
-                                  8.kH,
-                                  Text(
-                                    "No Issues Found",
-                                    style: Theme.of(context).textTheme.titleSmall,
-                                  )
-                                ],
-                              ))
-                            : Column(
-                                children: [
-                                  Expanded(
-                                    child: ListView.separated(
-                                      controller: _scrollController,
-                                      separatorBuilder: (_, i) => Container(
-                                        color: BORDER_COLOR_1,
-                                        height: 1,
-                                      ),
-                                      itemCount: issuesController.issues.length,
-                                      itemBuilder: (context, index) {
-                                        final issue = issuesController.issues[index];
-                                        return GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(AppRoutes.issueDetails,
-                                                  arguments: issue);
-                                            },
-                                            child: IssueCard(issue: issue));
-                                      },
-                                    ),
-                                  ),
-                                  // Use Padding or SizedBox instead of Positioned
-                                  Obx(
-                                    () => issuesController.loadingMoreIssues.value
-                                        ? const Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Center(
-                                              child: SpinKitThreeBounce(
-                                                size: 20,
-                                                color: PRIMARY_COLOR,
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                  )
-                                ],
+                            child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                AppImages.noProblemImage,
+                                color: WHITE,
+                                width: deviceWidth * 0.3,
                               ),
+                              8.kH,
+                              Text(
+                                "No Issues Found",
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              8.kH,
+                              PrimaryButton(
+                                width: deviceWidth * 0.4,
+                                  icon: const Icon(Icons.refresh, color: WHITE,),
+                                  label: "Refresh",
+                                  onTap: () async {
+                                    await issuesController.getRepoIssues();
+                                  })
+                            ],
+                          ))
+                        : Column(
+                            children: [
+                              Expanded(
+                                child: ListView.separated(
+                                  controller: _scrollController,
+                                  separatorBuilder: (_, i) => Container(
+                                    color: BORDER_COLOR_1,
+                                    height: 1,
+                                  ),
+                                  itemCount: issuesController.issues.length,
+                                  itemBuilder: (context, index) {
+                                    final issue =
+                                        issuesController.issues[index];
+                                    return GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed(AppRoutes.issueDetails,
+                                              arguments: issue);
+                                        },
+                                        child: IssueCard(
+                                          issue: issue,
+                                          index: index,
+                                        ));
+                                  },
+                                ),
+                              ),
+                              Obx(
+                                () => issuesController.loadingMoreIssues.value
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Loading",
+                                              style: Theme.of(context).textTheme.titleSmall,
+                                            ),
+                                            8.kW,
+                                            const SpinKitThreeBounce(
+                                              size: 20,
+                                              color: PRIMARY_COLOR,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                              )
+                            ],
+                          ),
               ),
             ),
           ],

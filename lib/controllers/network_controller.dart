@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:github_issue_tracker/controllers/issues_controller.dart';
 import 'package:github_issue_tracker/controllers/loader_controller.dart';
 import 'package:github_issue_tracker/helper/toast.dart';
 
@@ -32,20 +33,18 @@ class NetworkController extends GetxController {
   }
 
   _updateState(List<ConnectivityResult> connectivityResult) {
-    if (connectivityResult.contains(ConnectivityResult.mobile)) {
-      hasConnection(true);
+    if (connectivityResult.any((result) =>
+    result == ConnectivityResult.mobile ||
+        result == ConnectivityResult.wifi ||
+        result == ConnectivityResult.ethernet)) {
       hideLoading();
-    } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
       hasConnection(true);
-      hideLoading();
-    } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
-      hasConnection(true);
-      hideLoading();
-    } else if (connectivityResult.contains(ConnectivityResult.none)) {
+    } else {
       hasConnection(false);
       showNoInternetDialog(checkInternet: getConnectionType);
     }
   }
+
 
   @override
   void onClose() {

@@ -9,7 +9,9 @@ class IssueService {
     String? titleIncludes,
     int page = 1,
   }) async {
-    // Construct the search query based on the titleIncludes and titleExcludes parameters
+
+    if(repoUrl.isEmpty) repoUrl = "flutter/flutter";
+
     String query = 'repo:$repoUrl';
 
     if (titleIncludes != null) {

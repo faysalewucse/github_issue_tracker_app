@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:github_issue_tracker/helper/constant.dart';
+import 'package:github_issue_tracker/helper/constant.dart';
+import 'package:github_issue_tracker/helper/constant.dart';
 import 'package:github_issue_tracker/models/issue/issue.dart';
 import 'package:github_issue_tracker/services/issue_service.dart';
 
@@ -11,7 +14,7 @@ class IssuesController extends GetxController {
   final issuePage = 1.obs;
   final searchTextInclude = "".obs;
   final searchTextExclude = "".obs;
-  final repoUrl = "flutter/flutter".obs;
+  final repoUrl = defaultRepoUrl.obs;
 
   Future<void> getRepoIssues() async {
     try {
@@ -23,7 +26,7 @@ class IssuesController extends GetxController {
         loadingMoreIssues(true);
       }
 
-      if(repoUrl.isEmpty) repoUrl("flutter/flutter");
+      if(repoUrl.isEmpty) repoUrl(defaultRepoUrl);
 
       final response = await IssueService.getRepoIssues(page: currentPage, repoUrl: repoUrl.value, titleIncludes: searchTextInclude.value);
 
@@ -31,12 +34,15 @@ class IssuesController extends GetxController {
           .map((issueJson) => Issue.fromJson(issueJson))
           .toList();
 
-      if(searchTextInclude.isNotEmpty || searchTextExclude.isNotEmpty || repoUrl.isNotEmpty) issues.clear();
+      if((searchTextInclude.isNotEmpty || searchTextExclude.isNotEmpty || repoUrl.value != defaultRepoUrl) && issuePage.value == 1) {
+        issues.clear();
+      }
 
       totalIssues(response.data["total_count"]);
 
       issues.addAll(responseIssues);
-      filterIssues();
+
+      if(searchTextExclude.isNotEmpty) filterIssues();
 
     } catch (e) {
       getRepoIssuesErrorMessage(e.toString());
